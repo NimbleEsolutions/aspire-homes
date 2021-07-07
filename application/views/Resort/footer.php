@@ -379,7 +379,15 @@
 	            message:{
 
 	            }
-	        });    			
+	        }); 
+
+			$(window).scroll(function(){
+				if($(window).scrollTop() + $(window).height() > 2500){
+					$(".theme-config").css('display','none');
+				}else{
+					$(".theme-config").css('display','block');
+				}
+			}) 			
 		});
 	</script>
 </body>

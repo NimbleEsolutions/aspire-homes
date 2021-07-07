@@ -333,7 +333,7 @@
 
   .hotel_details_records {
     padding: 0px 0px 0px 0px;
-    margin-left: 0px !important;
+    margin-left: 2%;
   }
 
   .hotel_price_records {
@@ -411,57 +411,8 @@
 
   .hotel_details_records {
     padding: 0px 0px 0px 0px;
+
     margin-left: 2%;
-  }
-
-  .content-placeholder {
-    display: inline-block;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: forwards;
-    animation-fill-mode: forwards;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -webkit-animation-name: placeHolderShimmer;
-    animation-name: placeHolderShimmer;
-    -webkit-animation-timing-function: linear;
-    animation-timing-function: linear;
-    background: #f6f7f8;
-    background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee));
-    background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-    -webkit-background-size: 800px 104px;
-    background-size: 800px 104px;
-    height: inherit;
-    position: relative;
-  }
-
-  @-webkit-keyframes placeHolderShimmer {
-    0% {
-      background-position: -468px 0;
-    }
-
-    100% {
-      background-position: 468px 0;
-    }
-  }
-
-  @keyframes placeHolderShimmer {
-    0% {
-      background-position: -468px 0;
-    }
-
-    100% {
-      background-position: 468px 0;
-    }
-  }
-
-  .post_data {
-    padding: 24px;
-    border: 1px solid #f9f9f9;
-    border-radius: 5px;
-    margin-bottom: 24px;
-    box-shadow: 10px 10px 5px #eeeeee;
   }
 </style>
 <?php $CI = &get_instance(); ?>
@@ -471,7 +422,7 @@
       <!-- <div class="col-sm-1 col-md-1 col-lg-1"></div> -->
       <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
         <div class='filter'>
-          <p class='title' style="background-image: linear-gradient(to right, rgb(142 15 185), rgb(236 8 104)) !important;">Filters</p>
+          <p class='title'>Filters</p>
           <div class="budget hidden" style="border-bottom: 1px solid #e4effd;padding-bottom: 6px;">
             <p class='title_items active'>Budget per night</p>
             <input id="budget_price" name="">
@@ -479,7 +430,7 @@
           <div class="bedroom hidden">
             <p><span>Bedroom</span><span><input type="text" value="" name="bedroom_number"></span></p>
           </div>
-          <p class='title_items active hidden'>Location</p>
+          <p class='title_items active'>Location</p>
           <ul class="no-bullets">
             <li class="visible hidden" style="transition-delay: 12ms;text-align: -webkit-center;">
               <div class="input-group" style="padding-top: 2%;">
@@ -490,12 +441,12 @@
               </div>
             </li>
             <?php foreach ($destinations as $key) { ?>
-              <li class="visible hidden" style="transition-delay: 12ms;">
+              <li class="visible" style="transition-delay: 12ms;">
                 <input id='small' name='destination' <?php if (!empty($destination)) {
-                    if (in_array('' . $key['des_name'] . '', $destination, TRUE)) {
-                      echo "checked";
-                    }
-                  } ?> class="filterByDestination" type='checkbox' value="<?php echo $key['des_name']; ?>">
+                                                        if (in_array('' . $key['des_name'] . '', $destination, TRUE)) {
+                                                          echo "checked";
+                                                        }
+                                                      } ?> class="filterByDestination" type='checkbox' value="<?php echo $key['des_name']; ?>">
                 <label for='small'><?php echo ucfirst(strtolower($key['des_name'])); ?></label>
               </li>
             <?php } ?>
@@ -506,7 +457,9 @@
             //print_r($proprty_type);
 
             foreach ($proprty_type as $key) { ?>
-              <li class="visible">
+              <li class="<?php if (!empty($property)) {
+                            echo "visible";
+                          } ?>">
                 <input id='website' name="property" <?php if (!empty($property)) {
                                                       if (in_array('' . $key['pt_name'] . '', $property, TRUE)) {
                                                         echo "checked";
@@ -538,12 +491,148 @@
               </li>
             <?php } ?>
           </ul>
-          <p class='title' style="background-image: linear-gradient(to right, rgb(142 15 185), rgb(236 8 104)) !important;text-align: center;border-radius: 0px 0px 3px 3px;">Reset All</p>
+          <p class='title' style="text-align: center;border-radius: 0px 0px 3px 3px;">Reset All</p>
         </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-        <div id="load_data"></div>
-        <div id="load_data_msg"></div>
+        <!-- <div class="row" style="padding: 1% 0px;">
+					<div class="col-sm-6 col-md-6 col-lg-6 view_style">
+						<ul class="no-bullets" style="display: -webkit-inline-box;">
+							<li class="list-view current-view"><a href="javascript:void(0);"><i class="fa fa-th-list"></i> List View</a></li>
+							<li class="grid-view current-view"><a href="javascript:void(0);"><i class="fa fa-th-large"></i> Grid View</a></li>
+	 						<li class="map-view"><a href="javascrip:void(0);"><i class="fa fa-map-marker"></i> Map View</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-6"></div>
+				</div> -->
+        <div class="row" style="padding: 1%;margin-top: -3%;">
+          <!-- onclick="window.open('#','mywindow');" style="cursor: pointer;" -->
+          <?php foreach ($resort as $key) {
+            $resort_des = $CI->Home_model->fetch_details(array('des_id' => $key['rs_des_id'], 'des_isDelete' => 0), 'rm_destination');
+            //   print_r($resort_des);
+            $resort_seo = $CI->Home_model->fetch_details(array('rm_page' => 3, 'rm_resort_id' => $key['rs_id']), 'rm_seo');
+            $SEO_keyword = '';
+            if (empty($start_date)) {
+              $start_date = "" . date('d M Y') . "";
+            }
+            if (empty($till_date)) {
+              $till_date = "" . date('d M Y', strtotime('+1 day', strtotime($start_date))) . "";
+            }
+            if (empty($adult)) {
+              $adult = 0;
+            }
+            if (empty($child)) {
+              $child = 0;
+            }
+            if (empty($resort_seo)) {
+              $SEO_keyword = 'aspirevillastays';
+            } else {
+              $SEO_keyword = $resort_seo[0]['rm_keyword'];
+            }
+            //   echo $SEO_keyword;
+          ?>
+            <a href="<?php echo site_url('destinationsResort/' . $resort_des[0]['des_name'] . '/' . $SEO_keyword . '/' . $key['rs_display_name'] . '/' . $start_date . '/' . $till_date . '/' . $adult . '/' . $child . ''); ?>">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hotel_details">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 hotel_picture">
+                  <div id="myCarousel<?php echo $key['rs_id']; ?>" class="carousel slide">
+                    <div class="carousel-inner">
+                      <?php
+                      $resort_img = $CI->Home_model->fetch_details(array('im_resort_id' => $key['rs_id'], 'im_isDelete' => 0, 'im_image_type' => 0), 'rm_image');
+                      // print_r($resort_img);die();
+                      if (empty($resort_img)) { ?>
+                        <div class="item active">
+                          <img src="<?= base_url() ?>assets/images/image-not-available.jpg" alt="Los Angeles" style="width:100%;height: 230px;">
+                        </div>
+                        <?php } else {
+                        $j = 1;
+                        foreach ($resort_img as $key1) { ?>
+                          <div class="item <?php if ($j == 1) echo "active";
+                                            else echo ""; ?>">
+                            <img src="<?php echo $key1['im_image_url'] ?>" alt="test" style="width:100%;height: 230px;">
+                          </div>
+                      <?php $j++;
+                        }
+                      } ?>
+                    </div>
+                    <a class="left carousel-control" href="#myCarousel<?php echo $key['rs_id']; ?>" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left" style="font-size: 12px;top: 52%;"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel<?php echo $key['rs_id']; ?>" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px;    top: 52%;"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 hotel_details_records">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h2 class="hotel_heading"><?php echo $key['rs_display_name']; ?></h2>
+                    <?php $city = $CI->Home_model->fetch_details(array('ct_id' => $key['rs_city']), 'rm_cities'); ?>
+                    <?php $state = $CI->Home_model->fetch_details(array('st_id' => $key['rs_state']), 'rm_state'); ?>
+                    <h3 class="hotel_subheading"><?php if (!empty($key['rs_village'])) {
+                                                    echo ucfirst(strtolower($key['rs_village'])) . ",";
+                                                  } ?> <?php echo ucfirst(strtolower($city[0]['ct_name'])); ?>, <?php echo ucfirst(strtolower($state[0]['st_name'])); ?></h3>
+                    <div class="features clearfix">
+                      <?php $proprty_type = $CI->Home_model->fetch_details(array('pt_id' => $key['rs_pt_id'], 'pt_isDelete' => 0), 'rm_property_type'); ?>
+                      <span><i class="fa fa-home"></i> <?php echo $key['rs_caption']; //echo $proprty_type[0]['pt_name']; 
+                                                        ?></span> &nbsp
+                      <?php $person = $CI->db->query("SELECT sum((rr_no_of_rooms * (rr_max_person + rr_extra_adult))) as total_person FROM `rm_resort_roomtype` where rr_rs_id =" . $key['rs_id'] . " and rr_isDelete = 0")->result_array(); ?>
+                      <!--<span><i class="fa fa-users"></i> <span class="" style='display:none'><?php if (!empty($person)) {
+                                                                                                  echo $person[0]['total_person'];
+                                                                                                } else {
+                                                                                                  echo "0";
+                                                                                                } ?> Guests</span></span>-->
+                    </div>
+
+                    <?php
+                    $rate = $CI->db->query("SELECT min(rr_room_rate) as lowest_rate FROM `rm_resort_roomtype` where rr_rs_id = " . $key['rs_id'] . " and rr_isDelete = 0")->result_array();
+                    $records = $CI->db->query("SELECT count(rr_id) as total_records FROM `rm_resort_roomtype` where rr_rs_id = " . $key['rs_id'] . " and rr_isDelete = 0")->result_array();
+                    // $average =  $rate[0]['lowest_rate']/$records[0]['total_records'];
+                    // print_r($average)
+                    ?>
+                    <h5 class="hidden" style="padding: 0px 7%;"><i class="fa fa-rupee" style="    text-decoration: line-through;"> 7,500</i> <i style="font-size:large;color: #f47320;font-family: sans-serif;">&nbsp 33%</i></span></h3>
+                      <h3 class="marginTop" style="padding: 0px 7%;">
+                        <!-- <i class="fa fa-flash" style="    color: #f47320;border: 1px solid #b3acac;font-size: large;padding: 2%;    border-radius: 43%;"></i> --> <i class="fa fa-rupee"> <?php if (!empty($rate)) {
+                                                                                                                                                                                                  echo number_format($rate[0]['lowest_rate']);
+                                                                                                                                                                                                } ?></i><span style="font-size: small;text-transform: none;">/night</span>
+                      </h3>
+                      <?php if ($rate[0]['lowest_rate'] != 0) {
+                      ?>
+                        <a href="<?php echo site_url('destinationsResort/' . $resort_des[0]['des_name'] . '/' . $SEO_keyword . '/' . $key['rs_display_name'] . '/' . $start_date . '/' . $till_date . '/' . $adult . '/' . $child . ''); ?>"><span class="btn btn-primary" style="border-radius: 8%;margin: 2% 7%;font-weight: 700;"> View Details <i class="fa fa-chevron-right"></i> </span></a>
+                      <?php } ?>
+
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7" style="padding-right: 0px;">
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 hotel_review_details">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 hotel_review">
+                      <?php //echo $key['rs_caption']; 
+                      ?>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 hotel_price_records hidden">
+                    <?php
+                    $rate = $CI->db->query("SELECT min(rr_room_rate) as lowest_rate FROM `rm_resort_roomtype` where rr_rs_id = " . $key['rs_id'] . " and rr_isDelete = 0")->result_array();
+                    $records = $CI->db->query("SELECT count(rr_id) as total_records FROM `rm_resort_roomtype` where rr_rs_id = " . $key['rs_id'] . " and rr_isDelete = 0")->result_array();
+                    // $average =  $rate[0]['lowest_rate']/$records[0]['total_records'];
+                    // print_r($average)
+                    ?>
+                    <h5 class="hidden" style="padding: 0px 7%;"><i class="fa fa-rupee" style="    text-decoration: line-through;"> 7,500</i> <i style="font-size:large;color: #f47320;font-family: sans-serif;">&nbsp 33%</i></span></h3>
+                      <h3 class="" style="padding: 0px 7%;">
+                        <!-- <i class="fa fa-flash" style="    color: #f47320;border: 1px solid #b3acac;font-size: large;padding: 2%;    border-radius: 43%;"></i> --> <i class="fa fa-rupee"> <?php if (!empty($rate)) {
+                                                                                                                                                                                                  echo number_format($rate[0]['lowest_rate']);
+                                                                                                                                                                                                } ?></i><span style="font-size: small;text-transform: none;">/night</span>
+                      </h3>
+                      <?php if ($rate[0]['lowest_rate'] != 0) {
+                      ?>
+                        <a href="<?php echo site_url('destinationsResort/' . $resort_des[0]['des_name'] . '/' . $SEO_keyword . '/' . $key['rs_display_name'] . '/' . $start_date . '/' . $till_date . '/' . $adult . '/' . $child . ''); ?>"><span class="btn btn-primary" style="border-radius: 8%;margin: 2% 7%;font-weight: 700;"> View Resort <i class="fa fa-chevron-right"></i> </span></a>
+                      <?php } ?>
+                  </div>
+                </div>
+              </div>
+            </a>
+          <?php } ?>
+        </div>
       </div>
     </div>
   </div>

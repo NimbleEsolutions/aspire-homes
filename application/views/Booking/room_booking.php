@@ -34,7 +34,7 @@ h3,h4,h5,h6{
 }
 .hotel_picture,.carousel{
     width: 500px !important;
-    height: 200px !important;    
+    /* height: 200px !important;     */
     left: 0;
     top: 0;
     padding-right: 0px;
@@ -58,7 +58,7 @@ h3,h4,h5,h6{
     /*border-bottom: 1px solid #e2dfdf;*/
 }
 .featured, .team-section {
-    background: #ffffff;
+    background: #f5f5f5f;
 }
 .navi_title{
 	padding: 1%;
@@ -140,7 +140,7 @@ h3,h4,h5,h6{
     padding-bottom: .5%;
 }
 .special{
-	padding: 2em 0;
+	padding: 1em 0;
 }
 .crs_verification{
 	font-size: larger;
@@ -276,7 +276,7 @@ h3,h4,h5,h6{
 								</select>
 							</div>
 							<div class="col-sm-2 col-lg-2 col-md-2 col-xs-6" style="border-right: 1px solid;text-align: center;">
-								Extra Guests
+								Ex. Guests
 								<select class="form-control" name="extra" style="border:none;padding: 0px;text-align: center;padding-left: 40%;">
 									<?php if(!empty($extra)){?>
 										<option value="<?php echo $extra; ?>"><?php echo "".$extra.""; ?></option>

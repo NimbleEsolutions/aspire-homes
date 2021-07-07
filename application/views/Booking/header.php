@@ -1,230 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Aspire | Resort details</title>
+	<title><?php if(!empty($SEO_status)){echo $SEO_status[0]['rm_title'];}else{ echo "Aspire Villa Stays | Resort details";}?></title>
+	<meta name="description" content="<?php if(!empty($SEO_status)){ echo $SEO_status[0]['rm_description']; }?>"/>
+	<meta name="keywords" content="<?php if(!empty($SEO_status)){ echo $SEO_status[0]['rm_keyword']; }?>"/>
+	<meta name="robots" content="INDEX,FOLLOW" />
+	<link rel="canonical" href="https://aspirevillastays.com/">
 	<!-- for-mobile-apps -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" type="image/jpeg" href="<?php echo base_url().'assets/images/n_logo.png'?>"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<!--<script async src="https://www.googletagmanager.com/gtag/js?id=UA-152047937-1"></script>-->
-	<!--<script>-->
-	<!--  window.dataLayer = window.dataLayer || [];-->
-	<!--  function gtag(){dataLayer.push(arguments);}-->
-	<!--  gtag('js', new Date());-->
-	<!--  gtag('config', 'UA-152047937-1');-->
-	<!--</script>-->
-
-	<!-- Google Tag Manager -->
-	<!--<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':-->
-	<!--	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],-->
-	<!--	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=-->
-	<!--	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);-->
-	<!--})(window,document,'script','dataLayer','GTM-W42MR9K');</script>-->
-	<!-- End Google Tag Manager -->
-	<!-- //for-mobile-apps -->
+	<link rel="shortcut icon" type="image/jpeg" href="<?php echo base_url().'assets/images/tag.png'?>"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />		
 	<link href="<?=base_url()?>assets/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+	<link rel="stylesheet" href="<?=base_url()?>assets/css/flexslider.css" type="text/css" media="screen" property="" />
+	<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/css/zoomslider.css" />
 	<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/css/style.css" />
 	<link href="<?=base_url()?>assets/css/font-awesome.css" rel="stylesheet"> 
 	<link rel="stylesheet" href="<?=base_url()?>assets/css/jquery-ui.css" />
-	<link rel="stylesheet" href="<?=base_url()?>assets/css/jquery.bootstrap-touchspin.css" />
 	<script type="text/javascript" src="<?=base_url()?>assets/js/modernizr-2.6.2.min.js"></script>
 	<!--/web-fonts-->
-	<link rel="stylesheet" href="<?=base_url()?>assets/css/jquery.bootstrap-touchspin.css" />
-	<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600" rel="stylesheet">
-	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css"/>
-	<style type="text/css">
-	      h1,h2{
-           /*font-family: 'Ubuntu', sans-serif!important;*/
-           font-family: 'Lato', sans-serif!important;
-           line-height: 1.6;
-           font-size:26px;
-           margin:0;
-           text-transform: none;
-        }
-        
-        h3,h4,h5,h6{
-           font-family: 'Roboto', sans-serif!important;
-           margin:0;
-           text-transform: none;
-        }
-		.form-horizontal .form-group{
-			margin-right: 0px;
-	     	margin-left: 0px;
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:300,400,500,600,700;800&lang=en">
+	<!-- <link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600" rel="stylesheet"> -->
+	<!-- <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet"> -->
+	<link href="<?=base_url()?>assets/sweetalert/sweetalert.css" rel="stylesheet">
+	<!--//web-fonts-->
+	<style type="text/css">	
+		body{
+			font-family: Poppins;
 		}
-		.form-horizontal .col-sm-2{
-			padding-right: 0px;
-	     	padding-left: 0px;
-	     	border-top: 1px solid white;
-	     	border-bottom: 1px solid white;
-	     	border-left: 1px solid white;	     	
+		.navbar-default .navbar-nav > li > a{
+			color: #000;
 		}
 		.inner-header-agile{
-			border-bottom: none !important;
-		}
-		.btn-default{
-			background-color: #1cb363;
-			border-color: #1cb363;
-			border-radius: 4%;
-			color: #ffffff;
-			border-top-right-radius: 35%;
-    		border-bottom-right-radius: 35%;
-		}
-		.btn-default:hover{
-			background-color: #705345;
-			border-color: #705345;
-			border-radius: 4%;
-			color: #ffffff;
-			border-top-right-radius: 35%;
-    		border-bottom-right-radius: 35%;
-		}
-		.btn-primary:hover {
-            background-color: #0599a9;
-            border-color: #0599a9;
-            border-radius: 4%;
-            color: #ffffff;
-        }
-        .btn-primary {
-            background-color: #f47720;
-            border-color: #f47720;
-            border-radius: 4%;
-            color: #ffffff;
-        }
-		.agileits-contact-info ul li a:hover {
-		    color: #f36b21;
-		}
-		 h1,h2{
-           /*font-family: 'Ubuntu', sans-serif!important;*/
-           font-family: 'Lato', sans-serif!important;
-           line-height: 1.6;
-           font-size:26px;
-           margin:0;
-        }
-        
-        h3,h4,h5,h6{
-           font-family: 'Roboto', sans-serif!important;
-           margin:0;
-           text-transform: none;
-        }
-		.navbar-nav > li:nth-child(6){
-			border-right:none;
-		}
-		.navbar-nav > li:nth-child(5){
-			border-right:1px solid #ffffff;
+			background-color: #f5f5f5;
 		}	
-		.navbar-default .navbar-nav > li > a {
-			color: #646c73;
+		.navbar-default .navbar-nav>li>a.active, .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover{
+			color: #000;
+		}
+		.spa-agile {
+		    text-align: center;
+		    padding: 2em 0 0 0;
 		}
 		.w3layouts-top-strip{
-        	background:#292a2b!important;
-        }
-        .w3agile_footer_copy {
-            background: #f47720!important;
-        }
-        .w3l-footer {
-            background-color: #292a2b;
-        }
-        @media (max-width: 1440px){
-		    ul.nav.navbar-nav {
-                margin-left: 17em;
-                margin-top: 0em;
-            }
+			background:none !important;
 		}
-		i.fa.fa-volume-control-phone {
-            margin-left: 35px;
-        }
-	</style>
+		.w3agile_footer_copy {
+		    background: #ec0868!important;
+		}
+		.w3l-footer {
+		    background-color: #292a2b;
+		}
+		.search-bar-input{
+			padding: 0px 4px;
+		}
+		.theme-config {
+			position: relative;
+		    top: 0px;
+		    right: 0;
+		    overflow: hidden;
+		    z-index: 3000;
+			margin: 0px !important;
+		}
+		.flex-control-nav{
+			border:none !important;
+		}
+		.theme-config-box {
+			position: fixed;
+		    z-index: 2100;
+		    transition-duration: 0.8s;
+		}
+		.btn-primary:hover {
+		    background-image: linear-gradient(to right, rgb(142 15 185), rgb(236 8 104)) !important;
+		    border-radius: 3%;
+		    color: #ffffff;
+		}
+		.btn-primary {
+		    background-image: linear-gradient(to right, rgb(142 15 185), rgb(236 8 104)) !important;
+		    border: none;
+		    border-radius: 5px !important;
+		    color: #ffffff;
+		}
+		.spin-icon {
+		    background: #f47720;
+		    position: absolute;
+		    padding: 7px 10px 7px 13px;
+		    border-radius: 20px 0 0 20px;
+		    font-size: 16px;
+		    top: 0;
+		    left: 0;
+		    width: 40px;
+		    color: #fff;
+		    cursor: pointer;
+		}
+		.skin-settings {
+			background: #ffffff;
+			box-shadow: 0px 2px 9px 0px #00000029;
+			opacity: 1;
+			z-index: 99;
+			border-radius: 20px;
+			border: 1px solid #6d2586;
+			border-width: 4px 1px 5px 1px !important;
+			max-width: 300px;
+			width: 300px;
+		}
+		.skin-settings .title {
+		    background: #efefef;
+		    text-align: center;
+		    text-transform: uppercase;
+		    font-weight: 600;
+		    display: block;
+		    padding: 10px 15px;
+		    font-size: 12px;
+		}
+		.setings-item {
+		    padding: 10px 30px;
+		}
+		.agileits-contact-info ul li a:hover {
+			background-color: transparent;
+		    color: #f36b21;		   
+		}
+		.panel-default > .panel-heading {
+		    border-color: #FFF;
+		}
+		.panel-default{
+			border-color: #f47720;
+		}
+		.panel-title > a{
+			color: #FFF;
+		}
+		.flex-control-paging li a.flex-active {
+		    background: #665245;
+		}
+		.flex-control-paging li a.flex-active {
+		    background: #665245;
+		}
+		.zs-bullets{
+			display: none;
+		}
+		.offer-banner{
+			margin-top: .5rem;
+		    font-size: 1.2em;
+		    padding: 7px 15px;
+    		border: 1.5px solid #8e0fb9;
+		    color: #fff;
+		    border-radius: 4px;
+		    margin-right: 10em;
+		    /*background-color: #8e0fb99e;*/
+		    font-family: 'Baskerville';
+		}
+		.error{
+			color: red;
+		    font-size: smaller;
+		    padding-left: 2%;
+		}
+		input.error{
+			border-color: red;
+		}
+		@media (max-width: 1440px){
+			#demo-1 {
+			    min-height: 450px;
+			}
+			.baner-info {
+				padding-top: 0em;
+			}
+		}
+		@media (max-width: 767px){
+			.navbar-collapse{
+				background: transparent !important;
+			}
+			.offer-banner {
+				margin-top: 6.5em;
+				margin-right: 0px;
+			}
+		}
+		@media (max-width: 800px){
+			.baner-info {
+				display:none; 
+			}
+			
+			.navbar-nav{
+				display: none;
+			}
+			
+			#bs-example-navbar-collapse-1{
+				display: none !important;
+			}
+			.flex-control-nav {
+			    display: none;
+			}
+		}		
+		hr{
+			margin-top: 10px;
+			margin-bottom: 0px;
+			margin-right: 20%;
+		}
+		hr.hr-line{
+			height: 2px;
+    		background: #fba919 !important;
+		}
+</style>	
 </head>
 <body>
 	<!-- Google Tag Manager (noscript) -->
-	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W42MR9K"
-	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W42MR9K"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
 	<!-- End Google Tag Manager (noscript) -->
-	<!--<div class="w3layouts-top-strip">-->
-	<!--	<div class="top-srip-agileinfo">-->
-	<!--		<div class="agileits-contact-info text-left" style="float: left;">-->
-	<!--			<ul>-->
-	<!--				<li><i class="fa fa-volume-control-phone" aria-hidden="true"></i>  +919673611111 </li>-->
-	<!--			</ul>-->
-	<!--		</div>-->
-	<!--		<div class="agileits-contact-info text-right">-->
-	<!--			<ul>-->
-	<!--				<li><i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:info@aspirevillastays.com">info@aspirevillastays.com</a></li>-->
-	<!--				<li><i class="fa fa-user" aria-hidden="true"></i> <a href="#/">Admin Login</a></li>-->
-	<!--			</ul>-->
-	<!--		</div>-->
-	<!--		<div class="clearfix"></div>-->
-	<!--	</div>-->
-	<!--</div>-->
-	<div class="w3layouts-top-strip">
-		<div class="top-srip-agileinfo">
-			<!-- <div class="w3ls-social-icons text-left">
-				<a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
-				<a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
-				<a class="pinterest" href="#"><i class="fa fa-pinterest-p"></i></a>
-				<a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>
-			</div> -->
-			<div class="agileits-contact-info text-left" style="float: left;">
-				<ul>
-					<li><i class="fa fa-volume-control-phone" aria-hidden="true" style="10px;"></i> +91 9673611111</li>
-				</ul>
-			</div>
-			<div class="agileits-contact-info text-right">
-				<ul>
-					<li><i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:info@aspirevillastays.com" target="_blank">info@aspirevillastays.com</a></li>
-					<li><i class="fa fa-user" aria-hidden="true"></i> <a href="#">Login</a></li>
-				</ul>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
-	<div id="demo-1" data-zs-src='["<?=base_url()?>assets/images/4.jpg"]' data-zs-overlay="dots">
-		<div class="demo-inner-content">
+	<div id="demo-1">
+		<div class="demo-inner-content ">
 			<!--/header-w3l-->
-			<div class="header-w3-agileits">
-				<div class="inner-header-agile" style="background:#ffffff">	
+			<div class="header-w3-agileits" id="home">
+				<div class="inner-header-agile" style="padding-bottom: 0px !important;">	
 					<nav class="navbar navbar-default">
-						<!-- <div class="navbar-header" style="margin-left:3.5%">
-							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<div class="navbar-header">
+							<!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 								<span class="sr-only">Toggle navigation</span>
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
-							</button>
-							<a href="<?php echo site_url('/') ?>"><img src="<?php echo base_url().'assets/images/aspire-logo-web.png'?>" height="90px;"></a>
-						</div> -->
-						<div class="navbar-header col-sm-3 text-center" style="border: none; margin-left:-30px">
-							<a href="<?php echo site_url('/') ?>"><img src="<?php echo base_url().'assets/images/aspire-logo-web.png'?>" height="90px;"></a>			
+							</button> -->
+							<a href="<?php echo site_url('/') ?>"><img src="<?php echo base_url().'assets/images/aspirestays-logo.png'?>" height="50px;"></a>
+						</div>
+						<!-- navbar-header -->						
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: flex !important;float: right;">
+							<ul class="nav navbar-nav" style="margin-top:2%;margin-left: 0px;">
+								<li></li>
+								<li></li>
+								<li class="nav-item dropdown" style="z-index: 5000;">
+							        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							          Help
+							        </a>
+							        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="min-width: max-content;">
+							        	<ul style="list-style: none;">
+							          		<li class="dropdown-item"><a href="" style="color:#000;">WhatsApp : (+91)96736 11111 </a></li>
+							          		<li class="dropdown-item"><a href="" style="color:#000;">Email :  info@aspirevillastays.com</a></li>
+							          		<li class="dropdown-item" style="border-bottom:none;"><a href="" style="color:#000;">Policy Center</a></li>							          		
+							          	</ul>
+							          <div class="dropdown-divider"></div>
+							        </div>
+							    </li>
+							    <li><a href="#">Call Us : <b>+91 96736 11111</b></a></li>
+							</ul>
 						</div>
 						<div class="clearfix"> </div>	
 					</nav>
 				</div> 
-
-
-				<div class="inner-header-agile" style="padding: 1em 0.5em;box-shadow: 0px 2px #eee;background:#ffffff">	
-					<nav class="navbar navbar-default">
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-							<!-- <a href="<?php echo site_url('/') ?>"><img src="<?php echo base_url().'assets/images/nimble_logo.png'?>" height="90px;"></a> -->
-						</div>
-						<!-- navbar-header -->
-						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							<ul class="nav navbar-nav" style="margin-left: 18%;">
-								<li class=""><a href="<?php echo site_url('/');?>">Home</a></li>
-							    <li><a href="https://aspirevillastays.com/Blog/about-us/">About Us</a></li>
-								<li><a href="<?php echo site_url('/');?>#destinations">Destinations</a></li>
-								<li><a href="https://aspirevillastays.com/Blog/gallery/" target="_blank">Gallery</a></li>
-								<li><a href="https://aspirevillastays.com/Blog/">Blogs</a></li>
-								<li><a href="https://aspirevillastays.com/Blog/contact/">Contact</a></li>
-							</ul>
-							</ul>
-						</div>
-						<div class="clearfix"> </div>	
-					</nav>
-				</div>

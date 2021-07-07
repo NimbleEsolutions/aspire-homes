@@ -245,7 +245,7 @@
 						<?php if($start_date == $till_date){ $start_date = '';$till_date = '';} ?>
 						<!-- <div class="col-sm-2" style="border:none;"></div> -->
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortResort">
-							<form class="form-horizontal" action="#">
+							<form class="form-horizontal" method="get" action="<?=site_url('search')?>">
 								<div class="form-group" style="margin-left: 3em;">
 									<div class="col-xs-12 col-sm-12 col-md-3 col-lg-2"></div>
 									<div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 search-bar-input">
@@ -297,7 +297,7 @@
 										</select>
 									</div>
 									<div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 search-bar-input" >
-										<span value="" class="btn btn-primary update_resort_room" style="padding-top: 12px;padding-bottom: 12px;font-weight: 600;">Check Availability</span>
+										<button type="submit" value="" class="btn btn-primary update_resort_room" style="padding-top: 12px;padding-bottom: 12px;font-weight: 600;">Check Availability</span>
 									</div>
 								</div>
 							</form>	

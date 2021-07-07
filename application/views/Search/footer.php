@@ -344,7 +344,60 @@
 	            message:{
 
 	            }
-	        });    							
+	        });   
+			
+			var limit = 3;
+			var start = 0;
+			var action = 'inactive';
+
+			function lazzy_loader(limit){
+				var output = '';
+				for (let count = 0; count < limit; count++) {
+					output += '<div class="post_data">'; 
+					output += '<p><span class="content-placeholder" style="width:100%; height: 30px">&nbsp;</span></p>';
+					output += '<p><span class="content-placeholder" style="width:100%; height: 30px">&nbsp;</span></p>';
+					output += '</div>';					
+				}
+				$('#load_data_msg').html(output);
+			}
+
+			lazzy_loader(limit);
+
+			function load_resort_data(limit, start){
+				$.ajax({
+					url:"<?= base_url(); ?>Search/load_resort_data",
+					method:"POST",
+					data: {limit:limit, start:start,start_date:'<?php echo $start_date;?>',end_date:'<?php echo $till_date;?>',adult:<?php echo $adult; ?>},
+					cache:false,
+					success:function(data){
+						if(data == ''){
+							$('#load_data_msg').html('');
+							action = 'active';
+						}else{
+							console.log(data);
+							$('#load_data').append(data);
+							$('#load_data_msg').html("");
+							action = 'inactive';
+						}
+					}
+				});
+			}
+
+			if(action == 'inactive'){
+				action = 'active';
+				load_resort_data(limit,start);
+			}
+
+			$(window).scroll(function(){
+				if($(window).scrollTop() + $(window).height() > $("#load_data").height() && action == 'inactive'){
+					lazzy_loader(limit);
+					action = 'active';
+					start = start + limit;
+					setTimeout(() => {
+						load_resort_data(limit,start);
+					}, 1000);
+				}
+			})
 		});
 	</script>
 </body>

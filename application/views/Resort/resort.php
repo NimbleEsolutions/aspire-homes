@@ -4,7 +4,7 @@ body {
   line-height:1.6;
 }
 h1,h2{
-   font-family: 'Tahoma', sans-serif!important;
+   font-family: Poppins !important;
    line-height: 1.6;
    font-size:26px;
    margin:0;
@@ -15,7 +15,7 @@ h1,h2{
     width: 11.33333333%;
 }
 h3,h4,h5,h6{
-    font-family: 'Tahoma', sans-serif!important;
+    font-family: Poppins !important;
     margin:0;
     /*text-transform: uppercase;*/
     font-size:18px;
@@ -36,11 +36,11 @@ h3,h4,h5,h6{
   visibility: visible;
 }
 .special{
-	padding: 1em 0;
+	padding: 0;
 }
 .hotel_heading{
-    
-    font-weight: 700;
+	text-transform: none;
+    font-weight: 600;
 }
 .hotel_location{
 	color: #646c73;
@@ -74,11 +74,10 @@ h3,h4,h5,h6{
 .inner-header-agile {
     padding: 0em 0 0em 0.6em;
     /*border-top: 1px solid;*/
-    border-bottom: 1px solid #8d949e;
 }
 .navi_title{
 	padding: 1%;
-    background: #ffffff;
+    /* background: #ffffff; */
     /*border-top: 1px solid #e2dfdf;*/
     color: #000000;
     font-weight: bold;
@@ -96,6 +95,9 @@ h3,h4,h5,h6{
 }
 .fa-lg{
 	color: #64c18e;
+}
+.modal-backdrop.in{
+	opacity: 0;
 }
 .room_details{
 	background: white;
@@ -165,7 +167,7 @@ video{
     border-radius: 1%;
 }
 #carousel-custom {
-    margin-top:  10px;
+    /* margin-top:  10px; */
     width: 100%;
 }
 #carousel-custom .carousel-indicators {
@@ -202,7 +204,7 @@ video{
     background-image: none;
     width: 54px;
     height: 54px;
-    top: 40%;
+    top: 45%;
     left: 20px;
     margin-top: -27px;
     line-height: 54px;
@@ -217,7 +219,7 @@ video{
     background-image: none;
     width: 54px;
     height: 54px;
-    top: 40%;
+    top: 45%;
     right: 20px;
     margin-top: -27px;
     line-height: 54px;
@@ -229,17 +231,22 @@ video{
     transition: all 0.2s ease-in-out 0s;
 }
 .text-block {
-  	position: absolute;
-  	bottom: 15px;
-  	right: 15px;
-  	background-color: #f47720;
-  	color: #ffffff;
-  	padding: 0.5% 1%;
-  	border: 1.5px solid #ffffff;
-  	border-radius: 5%;
+	position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 0.5% 2%;
+    border: 1.5px solid #ffffff;
+    border-radius: 10px;
+    font-weight: 600;
 }
 .text-block a{
   	color: #ffffff;
+}
+.amenities_section{
+	padding-left: 10px;
+	padding-right: 10px;
 }
 @media (max-width: 400px){
 	.hotel_heading img{
@@ -275,8 +282,8 @@ video{
 	}
 	.column {
   float: left;
-  width: 50%;
-  padding: 0 10px;
+  width: 25%;
+  padding: 0 10px 10px;
 }
 .card {
   box-shadow: 1px 4px 8px 1px rgba(0, 0, 0, 0.2);
@@ -286,397 +293,307 @@ video{
 }
 }
 </style>
-<?php $CI = &get_instance(); ?>
-<div class="special featured" style="1em !important" >
-	<div class="container" style="background-color: #ffffff;padding: 1% 2%;">
+<?php $CI = &get_instance(); 
+	$property_type = $CI->Home_model->fetch_details(array('pt_id'=>$resort[0]['rs_pt_id']),'rm_property_type');
+	$person = $CI->db->query("SELECT sum((rr_no_of_rooms * (rr_max_person + rr_extra_adult))) as total_person FROM `rm_resort_roomtype` where rr_rs_id =".$resort[0]['rs_id']." and rr_isDelete = 0")->result_array();
+	$rate = $CI->db->query("SELECT min(rr_room_rate) as lowest_rate FROM `rm_resort_roomtype` where rr_rs_id = ".$resort[0]['rs_id']." and rr_isDelete = 0")->result_array();
+?>
+<div class="special featured" >
+	<div class="container">
 		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fixme">
-				<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-					<h2 class="hotel_heading" style="display: flex;"><?php echo ucfirst(strtolower($resort[0]['rs_display_name'])); ?>
-					</h2>
-					<?php $city = $CI->Home_model->fetch_details(array('ct_id'=>$resort[0]['rs_city']),'rm_cities'); ?>
-					<?php $state = $CI->Home_model->fetch_details(array('st_id'=>$resort[0]['rs_state']),'rm_state'); ?>
-					<?php $property_type = $CI->Home_model->fetch_details(array('pt_id'=>$resort[0]['rs_pt_id']),'rm_property_type'); ?>
-					<p class="hotel_location"><?php if(!empty($resort[0]['rs_village'])){echo ucfirst(strtolower($resort[0]['rs_village']))." ,"; }?><?php echo ucfirst(strtolower($city[0]['ct_name'])); ?>, <?php echo ucfirst(strtolower($state[0]['st_name'])); ?></p>
-					<p class="hotel_location"><?php echo $property_type[0]['pt_name']; ?> 
-						<?php $person = $CI->db->query("SELECT sum((rr_no_of_rooms * (rr_max_person + rr_extra_adult))) as total_person FROM `rm_resort_roomtype` where rr_rs_id =".$resort[0]['rs_id']." and rr_isDelete = 0")->result_array(); ?>
-      					&nbsp &nbsp<span><i class="fa fa-users"></i> <span class=""><?php if(!empty($person)){echo $person[0]['total_person'];}else{ echo "0";} ?> Guests</span></span>
-					</p>
-					<?php if(!empty($resort[0]['rs_tripadviser_link'])){ ?>
-					<a href="<?php echo $resort[0]['rs_tripadviser_link']; ?>" target="_blank"><img class="tripAdvisor" src="<?php echo base_url() ?>assets/images/TripAdvisor.png"></a>
-					<?php } ?>
-				</div>
-				<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" style="text-align: right;float: right;">
-					<?php $rate = $CI->db->query("SELECT min(rr_room_rate) as lowest_rate FROM `rm_resort_roomtype` where rr_rs_id = ".$resort[0]['rs_id']." and rr_isDelete = 0")->result_array();
-					$records = $CI->db->query("SELECT count(rr_id) as total_records FROM `rm_resort_roomtype` where rr_rs_id = ".$resort[0]['rs_id']." and rr_isDelete = 0")->result_array();
-        			// $average =  $rate[0]['lowest_rate']/$records[0]['total_records'];
-        			?>
-					<h3 class="" style="padding: 5px"><i class="fa fa-rupee"> <?php if(!empty($rate)){echo number_format($rate[0]['lowest_rate']);} ?></i><span style="font-size: small;text-transform: none;">/night</span></h3>
-					<a href="#roomRates"><span class="btn btn-primary btn-md" style="border-radius: 6%;"> Select Villa</span></a>
-					<p style="padding-top: 1%;"><button type="button" data-toggle="modal" style="border: none;background-color: #ffffff" data-id="2" data-target="#social_share"><i class="fa fa-share-alt" aria-hidden="true" >&nbsp;</i>Share</button>&nbsp; &nbsp;
-                	<a id="bookmark-this" href="#" title="Bookmark This Page" style="border: none;background-color: #ffffff;color: black"><i class="fa fa-heart-o" aria-hidden="true"></i> <span style="text-decoration: underline;">Save</span></a></p>
-				</div>
-			</div>
-				
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rst_gallery">
-				<div class="demo">
-			        <div class="item">            
-			            <div class="clearfix col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details" style="padding:1%;">
-			                <div id="carousel-custom" class="carousel slide" data-ride="carousel">
-							  <div class="carousel-inner" role="listbox">
-							  	<?php $j = 1; foreach ($rst_images as $key) {?>
-								    <div class="item <?php if($j == 1){ echo "active"; }?>">
-								      <img src="<?php echo $key['im_image_url'] ?>" alt="..." class="img-responsive">
-								      <div class="text-block">
-									    	<a href="<?php echo $resort[0]['rs_gallery_link'] ?>" target="_blank"><p>View All Images</p></a>
-									  </div>
-								    </div>
-								<?php $j++;} ?>
-							  </div>
-
-							  <!-- Controls -->
-							  <a class="left carousel-control" href="#carousel-custom" role="button" data-slide="prev">
-							    <i class="fa fa-chevron-left"></i>
-							    <span class="sr-only">Previous</span>
-							  </a>
-							  <a class="right carousel-control" href="#carousel-custom" role="button" data-slide="next">
-							    <i class="fa fa-chevron-right"></i>
-							    <span class="sr-only">Next</span>
-							  </a>			  
-							  
-							  <!-- Indicators -->
-							  <ol class="carousel-indicators visible-sm-block hidden-xs-block visible-md-block visible-lg-block">
-							  	<?php $j = 0; foreach ($rst_images as $key) {?>
-					            	<li data-target="#carousel-custom" data-slide-to="<?php echo $j; ?>" class="<?php if($j == 0){ echo "active"; }?>">
-					              		<img src="<?php echo $key['im_image_url'] ?>" alt="..." class="img-responsive">
-					            	</li>
-					            	<?php $j++;} ?>
-					          </ol> 
-							</div>  
-			            </div>
-			        </div>
-			    </div>
-			</div>
-
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="amenitiesFacilities">
-				<h3 class="navi_title">Popular Amenities</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details" style="text-align: center;">
-					<div class="row">
-						<?php foreach ($amenities as $key) {?>
-							<?php $amenity = $CI->Home_model->fetch_details(array('am_id'=>$key['ra_am_id'],'am_isDelete'=>0),'rm_amenity');
-							if(!empty($amenity)){ ?>
-								<?php if(empty($amenity[0]['am_icon'])){?>
-								    <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
-								    <?php }else{?>
-                                        <image src="<?php echo $amenity[0]['am_icon'] ?>" style="padding-right: 2%;"/> <span class="tooltiptext"><?php echo $amenity[0]['am_name'] ?></span>
-								    <?php }?> 
-							<?php } ?>
-						<?php } ?>
-						</ul>
-					</div>
-					<div class="col-lg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-						<br>
-						<button type="button" data-toggle="modal" data-id="2" data-target="#all_amenities" style="font-size: medium;color: #f47320;padding: 0.5% 1%;background-color: #ffffff;border: 1px solid #000000;border-radius: 8px;">View All Amenities</button>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
-				<h3 class="navi_title">About Villa</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-					<div class="row">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<p class="resort_des"><?php echo $resort[0]['rs_description']; ?></p>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
-				<h3 class="navi_title">About Locality</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-					<div class="row">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<p class="resort_des"><?php echo $resort[0]['rs_additional_info']; ?></p>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="">
-				<h3 class="navi_title">How to Reach</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px;">
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.8153608527145!2d73.80134981441823!3d18.62737277076191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b851b56d8b71%3A0x59e9ba17661c51f2!2sMind%20Space%20Hotel!5e0!3m2!1sen!2sin!4v1600676678404!5m2!1sen!2sin" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-						<button type="button" data-toggle="modal" data-id="2" data-target="#" style="margin-top:5%;font-size: medium;color: #f47320;padding: 0.5% 1%;background-color: #ffffff;border: 1px solid #000000;border-radius: 8px;">More About The Location</button>
-					</div>
-					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 hidden"><br>
-						<h3 class="navi_title">Address</h3><br>
-						<?php $city = $CI->Home_model->fetch_details(array('ct_id'=>$resort[0]['rs_city']),'rm_cities'); ?>
-						<?php $state = $CI->Home_model->fetch_details(array('st_id'=>$resort[0]['rs_state']),'rm_state'); ?>
-						<h4><?php echo $resort[0]['rs_address']; ?></h4>
-						<h4><?php echo ucfirst(strtolower($city[0]['ct_name'])); ?>, <?php echo ucfirst(strtolower($state[0]['st_name'])); ?> <?php echo $resort[0]['rs_pincode']; ?></h4>
-						<h4><?php  ?></h4>
-						<br>
-						<!--<h2 style="text-decoration: underline;">How to reach?</h2>-->
-						<?php $reach_by = explode('#', $resort[0]['rs_reach_info']);?>
-						<br>
-						<ul style="padding-left: 5%;font-size: small;">
-							<?php if(!empty($resort[0]['rs_reach_info'])){  for ($i=0; $i < count($reach_by); $i++) { ?>
-								<li><?php echo $reach_by[$i]; ?></li>
-							<?php } }?>
-						</ul>
-						
-					</div>
-					<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 hidden"><br>
-						<h3 class="navi_title">Things To Know</h3><br>
-						<div class="row" style="padding-left: 2%;">
-						<?php $to_do_list = explode('#', $resort[0]['rs_to_do']);?>
-						<ul style="padding-left: 2%;font-size: medium;">
-
-							<?php if(!empty($resort[0]['rs_to_do'])){ for ($i=0; $i < count($to_do_list); $i++) { ?>
-								<div class="col-sm-6">
-									<li><?php echo $to_do_list[$i]; ?></li>									
-								</div>
-							<?php } }?>
-						</ul>
-						</div>
-						<br>					
-					</div>
-				</div>
-				
-			</div>
-
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden" id="aboutUs">
-				<h3 class="navi_title">Sleeping Arrangements</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-					<div class="row">
-						<div class="col-sm-6 hidden">
-							 <h3 class="navi_title">Quick Facts</h3> 
-							<div class="col-sm-4" style="border: 1px solid #dddddd;border-radius: 7%;margin: 3% 2% 1% 1%;text-align: left;line-height: 4;padding: 4% 4%;">
-								<img src="<?php echo base_url() ?>assets/images/check-out-small.png" style="padding-bottom: 17%;">
-								<h3 style="padding-bottom: 4%;font-size:16px;"><?php echo date("g:i A", strtotime("".$resort[0]['rs_checkin_time']."")); ?></h3>
-								<h4 style="font-size:16px;">Check In Time</h4>
-							</div>
-							<div class="col-sm-4" style="border: 1px solid #dddddd;border-radius: 7%;margin: 3% 2% 1% 1%;text-align: left;line-height: 4;padding: 4% 4%;">
-								<img src="<?php echo base_url() ?>assets/images/check-in-small.png" style="padding-bottom: 17%;">
-								<h3 style="padding-bottom: 4%;font-size:16px;"><?php echo date("g:i A", strtotime("".$resort[0]['rs_checkout_time']."")); ?></h3>
-								<h4 style="font-size:16px;">Check Out Time</h4>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							 <!--<h3 class="navi_title">Sleeping Arrangements</h3> -->
-							<img src="<?php echo base_url() ?>assets/images/sleeping-arrangements.png">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
-				<h3 class="navi_title">Sleeping Arrangements</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-					<div class="row">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<img src="<?php echo base_url() ?>assets/images/sleeping-arrangements.png">
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
-				<h3 class="navi_title">Things To Know</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-					<div class="row">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<?php $to_do_list = explode('#', $resort[0]['rs_to_do']);?>
-						<ul style="padding-left: 2%;font-size: medium;">
-							<?php if(!empty($resort[0]['rs_to_do'])){ for ($i=0; $i < count($to_do_list); $i++) { ?>
-								<div class="col-sm-6">
-									<li><?php echo $to_do_list[$i]; ?></li>									
-								</div>
-							<?php } }?>
-						</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden" id="">
-				<h3 class="navi_title">Video</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 video navi_details">
-					<!-- <video controls>
-					  <source src="<?php echo $resort[0]['rs_video_link']; ?>" type="video/mp4">
-					</video> -->
-					<?php if(!empty($promotion)){ 
-						if($promotion[0]['ps_for'] == 1){ ?>
-							<div class="demo">
-						        <div class="item">            
-						            <div class="clearfix col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-						                <div id="carousel-custom" class="carousel slide" data-ride="carousel">
-										  	<div class="carousel-inner" role="listbox">
-										  	<?php $j = 1; foreach ($promotion as $key) {?>
-											    <div class="item <?php if($j == 1){ echo "active"; }?>">
-											      <img src="<?php echo $key['ps_path'] ?>" alt="..." class="img-responsive">
-											    </div>
-											<?php $j++;} ?>
-										  	</div>
-											<!-- Controls -->
-											<a class="left carousel-control" href="#carousel-custom" role="button" data-slide="prev">
-											    <i class="fa fa-chevron-left"></i>
-											    <span class="sr-only">Previous</span>
-											</a>
-											<a class="right carousel-control" href="#carousel-custom" role="button" data-slide="next">
-											    <i class="fa fa-chevron-right"></i>
-											    <span class="sr-only">Next</span>
-											</a>
-										</div>			  
-						            </div>
-						        </div>
-						    </div>
-						<?php }else{ ?>
-							<?php echo $promotion[0]['ps_path']; ?>
-						<?php } ?>
-					<?php }else{?>
-						<iframe height="473" src="https://www.youtube.com/embed/Ne22L_Db1Xg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%;"><img src="<?=base_url()?>assets/images/watch.jpg" alt="" class="img-responsive" /></iframe>
-					<?php } ?>
-				</div>
-			</div>
-
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="roomRates">
-				<h3 class="navi_title">Tarrif <?php if(!empty($package)){?>
-					
-				<?php } ?>
-				</h3>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
-					<div class="row" style="padding: 1% 1%;">
-					<?php  //print_r($room);
-					foreach ($room as $key1) {?>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 room_details">
-						<h2 class="room_heading"><?php echo $key1['rr_display_name']; ?></h2>
-						<?php $room_type = $CI->Home_model->fetch_details(array('rt_id'=>$key1['rr_rt_id'],'rt_isDelete'=>0),'rm_roomtype');?>
-
-						<h3 class="room_subheading hidden"><i class="fa fa-home"></i> <?php if(!empty($room_type)){ echo $room_type[0]['rt_name'];}else{ echo "NA";} ?> <i class="fa fa-users" style="padding-left: 2%"></i> <?php echo $key1['rr_max_person']; ?> + <?php echo $key1['rr_extra_adult']; ?> Guests</h3>
-						<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 hotel_picture">
-							<div id="myCarousel<?php echo $key1['rr_id'];?>" class="carousel slide">
-							    <div class="carousel-inner">
-								<?php 
-									$room_img = $CI->Home_model->fetch_details(array('im_resort_id'=>$key1['rr_rs_id'],'im_rs_room_id'=>$key1['rr_rt_id'],'im_isDelete'=>0,'im_image_type'=>1),'rm_image');
-									//print_r($room_img);
-									if (empty($room_img)) { ?>
-										<div class="item active">
-								        	<img src="<?=base_url()?>assets/images/image-not-available.jpg" alt="Los Angeles" style="width:100%;height: 200.969px;">
-								      	</div>
-								<?php } else {$j=1;								
-					    			foreach ($room_img as $key2) { //echo $key2['im_image_url'];?>
-								      	<div class="item <?php if($j==1) echo "active"; else echo"";?>">
-								        	<img src="<?php echo $key2['im_image_url']?>" alt="Room Image" style="width:100%;height: 200.969px;">
-								      	</div>
-							      <?php $j++;} }?>
-							    </div>
-							    <a class="left carousel-control" href="#myCarousel<?php echo $key1['rr_id'];?>" data-slide="prev">
-							      <span class="glyphicon glyphicon-chevron-left" style="font-size: 12px;top: 52%;"></span>
-							      <span class="sr-only">Previous</span>
-							    </a>
-							    <a class="right carousel-control" href="#myCarousel<?php echo $key1['rr_id'];?>" data-slide="next">
-							      <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px;top: 52%;"></span>
-							      <span class="sr-only">Next</span>
-							    </a>
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-							<p><?php echo $key1['rr_description']; ?></p><br>
-							<!-- <p><?php echo substr($key1['rr_description'],0,150); ?><?php if(strlen($key1['rr_description']) >150){?><a href=""> ...See More</a><?php } ?></p><br> -->
-							<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 room_amenities_details ">
-								<h4 style="text-decoration: underline;">Room Amenities</h4>
-								<?php $room_amenities = $CI->Home_model->fetch_details(array('rra_resort_id'=>$key1['rr_rs_id'],'rra_roomtype_id'=>$key1['rr_id'],'rra_isDelete'=>0),'rm_resort_room_amenity'); ?>
-								<ul class="no-bullets">
-									<div class="row">
-									<?php foreach ($room_amenities as $key) {?>
-										<div class="col-sm-4">
-											<?php $amenity = $CI->Home_model->fetch_details(array('am_id'=>$key['rra_amenity_id']),'rm_amenity'); ?>
-											<li style="font-size: small;padding: 4% 0 0 4%;"><i class="fa fa-check fa-sm" aria-hidden="true" style="color: #64c18e;"></i> <?php echo $amenity[0]['am_name']; ?></li>
+			<div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="padding-top: 0px;padding-right: 0px;">				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rst_gallery" style="padding-top: 0px;padding-right: 0px;padding-left:0px;">
+					<div class="demo">
+						<div class="item">            
+							<div class="clearfix col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details" style="padding:1%;padding-top: 0;">
+								<div id="carousel-custom" class="carousel slide" data-ride="carousel">
+								<div class="carousel-inner" role="listbox">
+									<?php $j = 1; foreach ($rst_images as $key) {?>
+										<div class="item <?php if($j == 1){ echo "active"; }?>" style="height: 450px;">
+										<img src="<?php echo $key['im_image_url'] ?>" alt="..." class="img-responsive" style="height: 450px;width:100%;">
+										<div class="text-block">
+											<!-- <a href="<?php echo $resort[0]['rs_gallery_link'] ?>" target="_blank"><p>View All Images</p></a> -->
+											<span>&nbsp <?php echo $property_type[0]['pt_name']; ?> &nbsp | &nbsp  <?php echo $resort[0]['rs_bedrooms']; ?> Bedrooms &nbsp | &nbsp <i class="fa fa-users"></i> <?php if(!empty($person)){echo $person[0]['total_person'];}else{ echo "0";} ?> Guests &nbsp </span>
 										</div>
-									<?php } ?>
-									    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-									        <button type="button" data-toggle="modal" data-id="2" data-target="#cancellation_policy" style="margin-top:5%;font-size: medium;color: #f47320;padding: 0.5% 1%;background-color: #ffffff;border: 1px solid #000000;border-radius: 8px;">Cancellation Policy</button>
-									        </div>
-									</div>
-								</ul>
-							</div>
-							<!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 room_services_details">
-								<h4 style="text-decoration: underline;">Services</h4>
-							</div> -->
-							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 room_price_records">
-								<h3 class="" style="padding: 0px 7%;"><i class="fa fa-rupee"> <?php if($key1['rr_isShared'] == 1){ echo number_format($key1['rr_sharing_cost']); }else{ echo number_format($key1['rr_room_rate']);} ?></i><span style="font-size: small;text-transform: none;">/night</span></h3>
-								<?php $total_available_rooms = $CI->Home_model->verifyRoomsAvailable($start_date,$till_date,$key1['rr_id'],$resort[0]['rs_id']); if ($total_available_rooms != 0 || $total_available_rooms > 0) {?>
-									<a href="<?php echo site_url('preVerify?stDate='.$start_date.'&tlDate='.$till_date.'&adult='.$adult.'&child='.$child.'&room=&extra=&rt='.$key1['rr_id'].'&r='.$resort[0]['rs_display_name'].'') ?>"><span class="btn btn-primary" style="border-radius: 8%;margin: 2% 7%;font-weight: 700;">Details <i class="fa fa-chevron-right"></i> </span></a>
-								<?php }else{?>
-									<h3 class="" style="padding: 1% 7%;color:red;">Not Available</h3>
-								<?php } ?>
-							</div>
-						</div>
-						<?php if($key1['rr_isShared'] == 1){ ?>
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 1%;color:red;">
-							<h4>Available On sharing basis</h4>
-						</div>
-						<?php } ?>
-					</div>					
-					<?php } ?>
+										</div>
+									<?php $j++;} ?>
+								</div>
 
-					<?php  //print_r($room);
-					foreach ($package as $pck_key) {?>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 room_details">
-						<h2 class="room_heading"><?php echo $pck_key['pk_name']; ?></h2>
-						<?php $package_type = $CI->Home_model->fetch_details(array('pt_id'=>$pck_key['pk_package_type_id'],'pt_isDelete'=>0),'rm_package_type');?>
-
-						<h3 class="room_subheading"><i class="fa fa-home"></i> <?php if(!empty($package_type)){ echo $package_type[0]['pt_name'];}else{ echo "NA";} ?> <i class="fa fa-users" style="padding-left: 2%"></i> <?php echo $pck_key['pk_number_day']; ?> Days <?php echo $pck_key['pk_number_night']; ?> Night</h3>
-						<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 hotel_picture">
-							<div id="myCarousel<?php echo $pck_key['pk_id'];?>" class="carousel slide">
-							    <div class="carousel-inner">
-								<?php 
+								<!-- Controls -->
+								<a class="left carousel-control" href="#carousel-custom" role="button" data-slide="prev">
+									<i class="fa fa-chevron-left"></i>
+									<span class="sr-only">Previous</span>
+								</a>
+								<a class="right carousel-control" href="#carousel-custom" role="button" data-slide="next">
+									<i class="fa fa-chevron-right"></i>
+									<span class="sr-only">Next</span>
+								</a>			  
 								
-									//$room_img = $CI->Home_model->fetch_details(array('im_resort_id'=>$pck_key['rr_rs_id'],'im_rs_room_id'=>$pck_key['rr_id'],'im_isDelete'=>0,'im_image_type'=>1),'rm_image');
-									$room_img = $CI->Home_model->fetch_details(array('im_resort_id'=>$pck_key['pk_resort_id'],'im_isDelete'=>0,'im_image_type'=>0),'rm_image');
-									//print_r($room_img);
-									if (empty($room_img)) { ?>
-										<div class="item active">
-								        	<img src="<?=base_url()?>assets/images/image-not-available.jpg" alt="Los Angeles" style="width:100%;height: 200.969px;">
-								      	</div>
-								<?php } else {$j=1;								
-					    			foreach ($room_img as $key2) { //echo $key2['im_image_url'];?>
-								      	<div class="item <?php if($j==1) echo "active"; else echo"";?>">
-								        	<img src="<?php echo $key2['im_image_url']?>" alt="Room Image" style="width:100%;height: 200.969px;">
-								      	</div>
-							      <?php $j++;} }?>
-							    </div>
-							    <a class="left carousel-control" href="#myCarousel<?php echo $pck_key['pk_id'];?>" data-slide="prev">
-							      <span class="glyphicon glyphicon-chevron-left" style="font-size: 12px;top: 52%;"></span>
-							      <span class="sr-only">Previous</span>
-							    </a>
-							    <a class="right carousel-control" href="#myCarousel<?php echo $pck_key['pk_id'];?>" data-slide="next">
-							      <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px;top: 52%;"></span>
-							      <span class="sr-only">Next</span>
-							    </a>
+								<!-- Indicators -->
+								<ol class="carousel-indicators visible-sm-block hidden-xs-block visible-md-block visible-lg-block hidden">
+									<?php $j = 0; foreach ($rst_images as $key) {?>
+										<li data-target="#carousel-custom" data-slide-to="<?php echo $j; ?>" class="hidden <?php if($j == 0){ echo "active"; }?>" >
+											<img src="<?php echo $key['im_image_url'] ?>" alt="..." class="img-responsive">
+										</li>
+										<?php $j++;} ?>
+								</ol> 
+								</div>  
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-							<p><?php echo $pck_key['pk_desc']; ?></p><br>
-							<!-- <p><?php echo substr($pck_key['pk_desc'],0,150); ?><?php if(strlen($pck_key['pk_desc']) >150){?><a href=""> ...See More</a><?php } ?></p><br> -->
-							<!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 room_services_details">
-								<h4 style="text-decoration: underline;">Services</h4>
-							</div> -->
-							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 room_price_records" style="float: right;">
-								<h3 class="" style="padding: 0px 7%;"><i class="fa fa-rupee"> <?php echo number_format($pck_key['pk_cost_adult']); ?></i><span style="font-size: small;text-transform: none;">/<?php if($pck_key['pk_pay_type'] == 1){ echo "Person";}else{ echo "Package";} ?></span></h3>
-								<a href="<?php echo site_url('pkVerify?st_date=&end_dates=&adult=&child=&pk='.$pck_key['pk_name'].'#pckBooking') ?>"><span class="btn btn-primary" style="border-radius: 8%;margin: 2% 7%;font-weight: 700;">Package Details  <i class="fa fa-chevron-right"></i> </span></a>
-							</div>
-						</div>
-						<?php if($key1['rr_isShared'] == 1){ ?>
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 1%;color:red;">
-							<h4>Available On sharing basis</h4>
-						</div>
-						<?php } ?>
-					</div>					
-					<?php } ?>
+					</div>
 				</div>
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fixme">
+					<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+						<h2 class="hotel_heading" style="display: flex;"><?php echo ucfirst(strtolower($resort[0]['rs_display_name'])); ?>
+						</h2>
+						<?php $city = $CI->Home_model->fetch_details(array('ct_id'=>$resort[0]['rs_city']),'rm_cities'); ?>
+						<?php $state = $CI->Home_model->fetch_details(array('st_id'=>$resort[0]['rs_state']),'rm_state'); ?>						
+						<p class="hotel_location"> <i class="fa fa-map-marker" aria-hidden="true"></i> <?php if(!empty($resort[0]['rs_village'])){echo ucfirst(strtolower($resort[0]['rs_village']))." ,"; }?><?php echo ucfirst(strtolower($city[0]['ct_name'])); ?>, <?php echo ucfirst(strtolower($state[0]['st_name'])); ?></p>
+						
+						<?php if(!empty($resort[0]['rs_tripadviser_link'])){ ?>
+						<a href="<?php echo $resort[0]['rs_tripadviser_link']; ?>" target="_blank"><img class="tripAdvisor" src="<?php echo base_url() ?>assets/images/TripAdvisor.png"></a>
+						<?php } ?>
+					</div>
+					<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" style="text-align: right;float: right;">
+						<p style="padding-top: 1%;"><button type="button" data-toggle="modal" style="border: none;background-color: transparent;font-size:large;color: #ec0868;" data-id="2" data-target="#social_share"><i class="fa fa-share-alt" aria-hidden="true" >&nbsp;</i>Share</button>&nbsp; &nbsp;
+						<a id="bookmark-this" href="#" title="Bookmark This Page" style="border: none;background-color: transparent;color: #ec0868;font-size:large"><i class="fa fa-heart-o" aria-hidden="true"></i> <span style="text-decoration: underline;">Save</span></a></p>
+					</div>
+				</div>
+					
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="amenitiesFacilities">
+					<!-- <h3 class="navi_title">Popular Amenities</h3> -->
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details" style="text-align: center;">
+						<div class="row" style="padding: 1rem 0rem;">
+							<?php foreach ($amenities as $key) {?>
+								<?php $amenity = $CI->Home_model->fetch_details(array('am_id'=>$key['ra_am_id'],'am_isDelete'=>0),'rm_amenity');
+								if(!empty($amenity)){ ?>
+								<div class="col-sm-1 amenities_section">
+									<?php if(empty($amenity[0]['am_icon'])){?>
+										<i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
+										<?php }else{?>
+											<image src="<?php echo $amenity[0]['am_icon']; ?>" style="padding-right: 2%;"/> <span class="tooltiptext"><?php echo $amenity[0]['am_name'] ?></span>
+										<?php }?> 
+									<?php } ?>
+								</div>
+							<?php } ?>
+							</ul>
+						</div>
+						<div class="col-lg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+							<br>
+							<button type="button" data-toggle="modal" data-id="2" data-target="#all_amenities" style="font-size: medium;color: #ec0868;padding: 0px 1%;background-color: transparent;border: none;">View All Amenities</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
+					<h3 class="navi_title">About Villa</h3>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<p class="resort_des"><?php echo $resort[0]['rs_description']; ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
+					<h3 class="navi_title">About Locality</h3>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<p class="resort_des"><?php echo $resort[0]['rs_additional_info']; ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="">
+					<h3 class="navi_title">How to Reach</h3>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px;">
+							<?php echo $resort[0]['rs_googlemap_pin'];	?>
+							<!-- <button type="button" data-toggle="modal" data-id="2" data-target="#" style="margin-top:5%;font-size: medium;color: #f47320;padding: 0.5% 1%;background-color: #ffffff;border: 1px solid #000000;border-radius: 8px;">More About The Location</button> -->
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 hidden"><br>
+							<h3 class="navi_title">Address</h3><br>
+							<?php $city = $CI->Home_model->fetch_details(array('ct_id'=>$resort[0]['rs_city']),'rm_cities'); ?>
+							<?php $state = $CI->Home_model->fetch_details(array('st_id'=>$resort[0]['rs_state']),'rm_state'); ?>
+							<h4><?php echo $resort[0]['rs_address']; ?></h4>
+							<h4><?php echo ucfirst(strtolower($city[0]['ct_name'])); ?>, <?php echo ucfirst(strtolower($state[0]['st_name'])); ?> <?php echo $resort[0]['rs_pincode']; ?></h4>
+							<h4><?php  ?></h4>
+							<br>
+							<!--<h2 style="text-decoration: underline;">How to reach?</h2>-->
+							<?php $reach_by = explode('#', $resort[0]['rs_reach_info']);?>
+							<br>
+							<ul style="padding-left: 5%;font-size: small;">
+								<?php if(!empty($resort[0]['rs_reach_info'])){  for ($i=0; $i < count($reach_by); $i++) { ?>
+									<li><?php echo $reach_by[$i]; ?></li>
+								<?php } }?>
+							</ul>
+							
+						</div>
+						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 hidden"><br>
+							<h3 class="navi_title">Things To Know</h3><br>
+							<div class="row" style="padding-left: 2%;">
+							<?php $to_do_list = explode('#', $resort[0]['rs_to_do']);?>
+							<ul style="padding-left: 2%;font-size: medium;">
+
+								<?php if(!empty($resort[0]['rs_to_do'])){ for ($i=0; $i < count($to_do_list); $i++) { ?>
+									<div class="col-sm-6">
+										<li><?php echo $to_do_list[$i]; ?></li>									
+									</div>
+								<?php } }?>
+							</ul>
+							</div>
+							<br>					
+						</div>
+					</div>
+					
+				</div>
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden" id="aboutUs">
+					<h3 class="navi_title">Sleeping Arrangements</h3>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+						<div class="row">
+							<div class="col-sm-6 hidden">
+								<h3 class="navi_title">Quick Facts</h3> 
+								<div class="col-sm-4" style="border: 1px solid #dddddd;border-radius: 7%;margin: 3% 2% 1% 1%;text-align: left;line-height: 4;padding: 4% 4%;">
+									<img src="<?php echo base_url() ?>assets/images/check-out-small.png" style="padding-bottom: 17%;">
+									<h3 style="padding-bottom: 4%;font-size:16px;"><?php echo date("g:i A", strtotime("".$resort[0]['rs_checkin_time']."")); ?></h3>
+									<h4 style="font-size:16px;">Check In Time</h4>
+								</div>
+								<div class="col-sm-4" style="border: 1px solid #dddddd;border-radius: 7%;margin: 3% 2% 1% 1%;text-align: left;line-height: 4;padding: 4% 4%;">
+									<img src="<?php echo base_url() ?>assets/images/check-in-small.png" style="padding-bottom: 17%;">
+									<h3 style="padding-bottom: 4%;font-size:16px;"><?php echo date("g:i A", strtotime("".$resort[0]['rs_checkout_time']."")); ?></h3>
+									<h4 style="font-size:16px;">Check Out Time</h4>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<!--<h3 class="navi_title">Sleeping Arrangements</h3> -->
+								<img src="<?php echo base_url() ?>assets/images/sleeping-arrangements.png">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
+					<h3 class="navi_title">Sleeping Arrangements</h3>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<img src="<?php echo base_url() ?>assets/images/sleeping-arrangements.png">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
+					<h3 class="navi_title">Things To Know</h3>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<?php $to_do_list = explode('#', $resort[0]['rs_to_do']);?>
+							<ul style="padding-left: 2%;font-size: medium;">
+								<?php if(!empty($resort[0]['rs_to_do'])){ for ($i=0; $i < count($to_do_list); $i++) { ?>
+									<div class="col-sm-6">
+										<li><?php echo $to_do_list[$i]; ?></li>									
+									</div>
+								<?php } }?>
+							</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden" id="">
+					<h3 class="navi_title">Video</h3>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 video navi_details">
+						<!-- <video controls>
+						<source src="<?php echo $resort[0]['rs_video_link']; ?>" type="video/mp4">
+						</video> -->
+						<?php if(!empty($promotion)){ 
+							if($promotion[0]['ps_for'] == 1){ ?>
+								<div class="demo">
+									<div class="item">            
+										<div class="clearfix col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
+											<div id="carousel-custom" class="carousel slide" data-ride="carousel">
+												<div class="carousel-inner" role="listbox">
+												<?php $j = 1; foreach ($promotion as $key) {?>
+													<div class="item <?php if($j == 1){ echo "active"; }?>">
+													<img src="<?php echo $key['ps_path'] ?>" alt="..." class="img-responsive">
+													</div>
+												<?php $j++;} ?>
+												</div>
+												<!-- Controls -->
+												<a class="left carousel-control" href="#carousel-custom" role="button" data-slide="prev">
+													<i class="fa fa-chevron-left"></i>
+													<span class="sr-only">Previous</span>
+												</a>
+												<a class="right carousel-control" href="#carousel-custom" role="button" data-slide="next">
+													<i class="fa fa-chevron-right"></i>
+													<span class="sr-only">Next</span>
+												</a>
+											</div>			  
+										</div>
+									</div>
+								</div>
+							<?php }else{ ?>
+								<?php echo $promotion[0]['ps_path']; ?>
+							<?php } ?>
+						<?php }else{?>
+							<iframe height="473" src="https://www.youtube.com/embed/Ne22L_Db1Xg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%;"><img src="<?=base_url()?>assets/images/watch.jpg" alt="" class="img-responsive" /></iframe>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+				<div class="theme-config">
+					<div class="theme-config-box verify" id="spin">
+						<div class="skin-settings">
+							<form class="form-horizontal" method="post" id="callRequest" action="#" style="padding:0px 5% 1%;">
+								<div class="form-group">
+									<!-- <h2 style="text-transform: none;"> &nbsp Request a Call</h2> -->
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<label class="control-label">Dates</label>
+										<div class="input-group date" >
+				                        	<input type="text" name="form_dates" class="form-control" placeholder="Check In" value="<?php echo $start_date; ?>" style="height: 45px;border-right: none;" ><span class="input-group-addon" style="border-left: none;border-right: none;background:transparent;font-size: 21px;"><i class="fa fa-long-arrow-right"></i></span>
+											<input type="text" name="till_dates" class="form-control" placeholder="Check Out" value="<?php echo $till_date; ?>" style="height: 45px;border-left: none;">
+				                    	</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<label class="control-label">Guests</label>
+										<select class="form-control" name="adult" style="height: 45px;">
+											<option value="">Guests</option>
+											<?php for ($i=1; $i <= 30; $i++) { ?>
+												<option value="<?=  $i; ?>" <?php if($adult == $i){ echo "selected"; }?>><?=  $i; ?> Guests</option>";
+											<?php } ?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group" style="margin-bottom: 0;">
+									<div class="col-sm-12" style="font-size: 2.5rem;font-weight: 600;color: #212934 !important;text-align: center;">
+										<i class="fa fa-rupee"> </i> <span> <?php if(!empty($rate)){echo number_format($rate[0]['lowest_rate']);} ?></span>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12"><br>
+									<a href="<?php echo site_url('preVerify?stDate='.$start_date.'&tlDate='.$till_date.'&adult='.$adult.'&child='.$child.'&room=1&extra=&rt='.$room[0]['rr_id'].'&r='.$resort[0]['rs_display_name'].'') ?>"><span class="btn btn-primary" style="width: 100%;font-size: large;font-weight: 600;">Proceed to Booking</span></a>
+									</div>
+									<div class="col-sm-12">
+										<p style="font-size: 11px;font-family: 'Poppins';text-align: center;padding: 0.5rem 1rem;color: red;">Prices are dynamic, but guaranteed till midnight</p>
+									</div>
+									<div class="col-lg-12">
+										<p style="font-size: 11px;font-family: 'Poppins';text-align: center;padding: 0.5rem 1rem;">You will have to pay a <b> refundable </b> security deposit of <b> ₹ 7,143 per room</b></p>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 			
@@ -716,10 +633,10 @@ video{
 			</div>
 		</section>
 		
-		<div id="all_amenities" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 900px; margin: auto;">
+		<div id="all_amenities" class="modal fade" role="dialog" style="z-index:5000;">
+            <div class="modal-dialog" style="width: 900px; margin: auto;z-index:5000;">
                 <!-- Modal content-->               
-                <div class="modal-content" style="border-radius: 35px;">
+                <div class="modal-content" style="border-radius: 35px;z-index:5000;">
                 	<div class="modal-header">
 				        <h3 class="modal-title text-center">Amenities</h3>
 				    </div>
