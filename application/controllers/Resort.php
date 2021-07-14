@@ -16,6 +16,7 @@
 				$data['package'] = $this->db->query("SELECT * FROM `rm_package` WHERE pk_resort_id = ".$data['resort'][0]['rs_id']." and '".date('Y-m-d')."' BETWEEN pk_display_start_date and pk_display_end_date and pk_isDelete = 0")->result_array();
 				$data['promotion'] = $this->db->query("SELECT * FROM `rm_promotion_status` where ps_where = 2 and ps_rs_id = ".$data['resort'][0]['rs_id']." and ps_isDelete = 0")->result_array();
 				$data['SEO_status'] = $this->Home_model->fetch_details(array('rm_page'=>3,'rm_resort_id'=>$data['resort'][0]['rs_id']),'rm_seo');
+				$data['sleep_arrange'] = $this->Home_model->fetch_details(array('ra_resort_id'=>$data['resort'][0]['rs_id'],'ra_isDelete'=>0),'rm_rooms_amenity');
 				if(empty($data['SEO_status'])){
 					$data['SEO_keyword'] = 'feetupholidays';
 				}else{ 

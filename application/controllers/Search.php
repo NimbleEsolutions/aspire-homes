@@ -52,7 +52,7 @@
 		function load_resort_data()
 		{
 			$output = '';
-			$data = $this->Search_model->fetch_data($this->input->post('limit'),$this->input->post('start'));
+			$data = $this->Search_model->fetch_data($this->input->post('limit'),$this->input->post('start'),$this->input->post('type'),$this->input->post('dest'));
 			if($data->num_rows() > 0){
 				foreach($data->result() as $row){
 					$resort_des = $this->Home_model->fetch_details(array('des_id'=>$row->rs_des_id,'des_isDelete'=>0),'rm_destination');
@@ -69,7 +69,13 @@
 						foreach($amenities as $amen){
 							$amenityy = $this->Home_model->fetch_details(array('am_id'=>$amen['ra_am_id'],'am_isDelete'=>0),'rm_amenity');
 							if(!empty($amenityy)){
-								$amenity = "".$amenity."<img src='".$amenityy[0]['am_icon']."' style='width: 10%;'> &nbsp";
+								$amenity = "".$amenity."<div class='tooltip' style='display:inline-block;position:relative;'>
+												<image src='".$amenityy[0]['am_icon']."' style='width:60%;'></image>
+												<div class='top'>
+													<h4 style='font-size: xx-small;'>".$amenityy[0]['am_name']."</h4>
+													<i></i>
+												</div>
+											</div>";
 							}
 						}
 					}

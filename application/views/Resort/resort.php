@@ -248,6 +248,56 @@ video{
 	padding-left: 10px;
 	padding-right: 10px;
 }
+.tooltip {
+    display:inline-block;
+    position:relative;
+    /* border-bottom:1px dotted #666; */
+    /* text-align:left; */
+	opacity: unset;
+}
+
+.tooltip .top {
+	min-width: max-content;
+    top:-5px;
+    left:50%;
+    transform:translate(-50%, -100%);
+    padding:10px 10px;
+    color:#ffffff;
+    background-color:#000000;
+    font-weight:normal;
+    font-size:10px;
+    border-radius:8px;
+    position:absolute;
+    z-index:99999999;
+    box-sizing:border-box;
+    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+    display:none;
+}
+
+.tooltip:hover .top {
+    display:block;
+}
+
+.tooltip .top i {
+    position:absolute;
+    top:100%;
+    left:50%;
+    margin-left:-12px;
+    width:24px;
+    height:12px;
+    overflow:hidden;
+}
+
+.tooltip .top i::after {
+    content:'';
+    position:absolute;
+    width:12px;
+    height:12px;
+    left:50%;
+    transform:translate(-50%,-50%) rotate(45deg);
+    background-color:#000000;
+    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+}
 @media (max-width: 400px){
 	.hotel_heading img{
 		width: 15%;	
@@ -313,7 +363,7 @@ video{
 										<img src="<?php echo $key['im_image_url'] ?>" alt="..." class="img-responsive" style="height: 450px;width:100%;">
 										<div class="text-block">
 											<!-- <a href="<?php echo $resort[0]['rs_gallery_link'] ?>" target="_blank"><p>View All Images</p></a> -->
-											<span>&nbsp <?php echo $property_type[0]['pt_name']; ?> &nbsp | &nbsp  <?php echo $resort[0]['rs_bedrooms']; ?> Bedrooms &nbsp | &nbsp <i class="fa fa-users"></i> <?php if(!empty($person)){echo $person[0]['total_person'];}else{ echo "0";} ?> Guests &nbsp </span>
+											<span>&nbsp <?php echo $resort[0]['rs_type']; ?> &nbsp | &nbsp  <?php echo $resort[0]['rs_bedrooms']; ?> Bedrooms &nbsp | &nbsp <i class="fa fa-users"></i> <?php if(!empty($person)){echo $person[0]['total_person'];}else{ echo "0";} ?> max guests &nbsp </span>
 										</div>
 										</div>
 									<?php $j++;} ?>
@@ -349,7 +399,7 @@ video{
 						</h2>
 						<?php $city = $CI->Home_model->fetch_details(array('ct_id'=>$resort[0]['rs_city']),'rm_cities'); ?>
 						<?php $state = $CI->Home_model->fetch_details(array('st_id'=>$resort[0]['rs_state']),'rm_state'); ?>						
-						<p class="hotel_location"> <i class="fa fa-map-marker" aria-hidden="true"></i> <?php if(!empty($resort[0]['rs_village'])){echo ucfirst(strtolower($resort[0]['rs_village']))." ,"; }?><?php echo ucfirst(strtolower($city[0]['ct_name'])); ?>, <?php echo ucfirst(strtolower($state[0]['st_name'])); ?></p>
+						<p class="hotel_location"> <i class="fa fa-map-marker" aria-hidden="true"></i> <?php echo ucfirst(strtolower($city[0]['ct_name'])); ?>, <?php echo ucfirst(strtolower($state[0]['st_name'])); ?></p>
 						
 						<?php if(!empty($resort[0]['rs_tripadviser_link'])){ ?>
 						<a href="<?php echo $resort[0]['rs_tripadviser_link']; ?>" target="_blank"><img class="tripAdvisor" src="<?php echo base_url() ?>assets/images/TripAdvisor.png"></a>
@@ -373,7 +423,13 @@ video{
 									<?php if(empty($amenity[0]['am_icon'])){?>
 										<i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
 										<?php }else{?>
-											<image src="<?php echo $amenity[0]['am_icon']; ?>" style="padding-right: 2%;"/> <span class="tooltiptext"><?php echo $amenity[0]['am_name'] ?></span>
+											<div class="tooltip" style="display:inline-block;position:relative;">
+												<image src="<?php echo $amenity[0]['am_icon']; ?>"></image>
+												<div class="top">
+													<h4 style="font-size: small;"><?php echo $amenity[0]['am_name'] ?></h4>
+													<i></i>
+												</div>
+											</div>
 										<?php }?> 
 									<?php } ?>
 								</div>
@@ -470,23 +526,32 @@ video{
 									<h4 style="font-size:16px;">Check Out Time</h4>
 								</div>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-4">
 								<!--<h3 class="navi_title">Sleeping Arrangements</h3> -->
-								<img src="<?php echo base_url() ?>assets/images/sleeping-arrangements.png">
+								
 							</div>
 						</div>
 					</div>
 				</div>
+				<?php if(!empty($sleep_arrange)){?>
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
 					<h3 class="navi_title">Sleeping Arrangements</h3>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details">
 						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<img src="<?php echo base_url() ?>assets/images/sleeping-arrangements.png">
+						<?php foreach($sleep_arrange as $sleep){ 
+							$amenity = $CI->Home_model->fetch_details(array('am_id'=>$sleep['ra_room_amt_id'],'am_isDelete'=>0),'rm_amenity');
+						?>
+							<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+								<h3 style="padding: 0 0 0.7rem 0.2rem;"><?= $sleep['ra_room_name']; ?></h3> 
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 sleeping_arrangement" style="text-align: center;padding: 8px;color: #2368A2;background: #FFFFFF 0% 0% no-repeat padding-box;border: 1px solid #1A4971;opacity: 0.9;">
+									<span> <?php if($sleep['ra_quantity'] != 0){ ?> <b> <?= $sleep['ra_quantity'];?> </b><i class="fa fa-times" aria-hidden="true"></i> <?php } ?><img src="<?= $amenity[0]['am_icon']; ?>" alt="" style="width: 20%;"> <?= $amenity[0]['am_name']; ?></span>
+								</div>
 							</div>
+						<?php } ?>
 						</div>
 					</div>
 				</div>
+				<?php } ?>
 				
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="aboutUs">
 					<h3 class="navi_title">Things To Know</h3>
@@ -805,48 +870,45 @@ video{
 	</div>
 </div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #ffffff">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="background-color: #ffffff"><br>
 	<h3 class="navi_title">Similar Properties</h3>
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 navi_details" style="background-color: #ffffff">
-         <div class="row">
-<?php
-	$proprty_type_id=$resort[0]['rs_pt_id'];
-	//print_r($property_type);
-  	$resort_dtl = $CI->Home_model->fetch_details(array('rs_pt_id'=>$proprty_type_id),'rm_resort');
-  	// print_r($resort_dtl);
-  	//echo "cnt= ". count($resort_dtl);
+        <div class="row">
+			<?php
+				$proprty_type_id=$resort[0]['rs_pt_id'];
+				//print_r($property_type);
+				$resort_dtl = $CI->Home_model->fetch_details(array('rs_pt_id'=>$proprty_type_id),'rm_resort');
+				// print_r($resort_dtl);
+				//echo "cnt= ". count($resort_dtl);
 
-  	foreach ($resort_dtl as $rst) { 
-  	$resort_des = $CI->Home_model->fetch_details(array('des_id'=>$rst['rs_des_id'],'des_isDelete'=>0),'rm_destination');
-	$resort_img = $CI->Home_model->fetch_details(array('im_resort_id'=>$rst['rs_id'],'im_isDelete'=>0,'im_image_type'=>0),'rm_image');
-	$resort_seo = $CI->Home_model->fetch_details(array('rm_page'=>3,'rm_resort_id'=>$rst['rs_id']),'rm_seo');
-	$SEO_keyword = '';
-    if(empty($start_date)){ $start_date = "".date('d M Y')."";}
-    if(empty($till_date)){ $till_date = "". date('d M Y', strtotime('+1 day', strtotime($start_date)))."";}
-    if(empty($adult)){ $adult = 0;}
-    if(empty($child)){ $child = 0;}
-    if(empty($resort_seo)){ $SEO_keyword = 'aspirevillastays';}else{ $SEO_keyword = $resort_seo[0]['rm_keyword'];}
-?>
-	<div id="myCarousel<?php echo $rst['rs_id'];?>" class="column">
-	<?php if (empty($resort_img)) { ?>
-		<a href="<?php echo site_url('destinationsResort/'.$resort_des[0]['des_name'].'/'.$SEO_keyword.'/'.$rst['rs_display_name'].'/'.$start_date.'/'.$till_date.'/'.$adult.'/'.$child.'');?>" target="_blank">
-		<div class="card">
-			<img src="<?=base_url()?>assets/images/image-not-available.jpg" style="width:100%;height: 250px;">	        	
-      	</div>
-      </a>
-  <?php } else { //$j=1;								
-	//	foreach ($resort_img as $key1) {?>
-
-		<a href="<?php echo site_url('destinationsResort/'.$resort_des[0]['des_name'].'/'.$SEO_keyword.'/'.$rst['rs_display_name'].'/'.$start_date.'/'.$till_date.'/'.$adult.'/'.$child.'');?>" target="_blank">
-    		<div class="card">
-    		    <h3 style="margin-bottom:2%;text-align: left;"><?php echo $rst['rs_name'];?></h3>
-		        <img src="<?php echo $resort_img[0]['im_image_url']?>" alt="test" style="width:100%;height: 250px;">
-		    </div>
-		</a>
-      <?php //$j++;
-			} //} ?>
-    </div>
-    <?php } ?>
-</div>
-    </div>
+				foreach ($resort_dtl as $rst) { 
+				$resort_des = $CI->Home_model->fetch_details(array('des_id'=>$rst['rs_des_id'],'des_isDelete'=>0),'rm_destination');
+				$resort_img = $CI->Home_model->fetch_details(array('im_resort_id'=>$rst['rs_id'],'im_isDelete'=>0,'im_image_type'=>0),'rm_image');
+				$resort_seo = $CI->Home_model->fetch_details(array('rm_page'=>3,'rm_resort_id'=>$rst['rs_id']),'rm_seo');
+				$SEO_keyword = '';
+				if(empty($start_date)){ $start_date = "".date('d M Y')."";}
+				if(empty($till_date)){ $till_date = "". date('d M Y', strtotime('+1 day', strtotime($start_date)))."";}
+				if(empty($adult)){ $adult = 0;}
+				if(empty($child)){ $child = 0;}
+				if(empty($resort_seo)){ $SEO_keyword = 'aspirevillastays';}else{ $SEO_keyword = $resort_seo[0]['rm_keyword'];}
+			?>
+			<div id="myCarousel<?php echo $rst['rs_id'];?>" class="col-sm-3 col-md-3">
+				<?php if (empty($resort_img)) { ?>
+					<a href="<?php echo site_url('destinationsResort/'.$resort_des[0]['des_name'].'/'.$SEO_keyword.'/'.$rst['rs_display_name'].'/'.$start_date.'/'.$till_date.'/'.$adult.'/'.$child.'');?>" target="_blank">
+					<div class="card">
+						<img src="<?=base_url()?>assets/images/image-not-available.jpg" style="width:100%;height: 250px;">	        	
+					</div>
+				</a>
+				<?php } else { //$j=1;								
+				//	foreach ($resort_img as $key1) {?>
+					<a href="<?php echo site_url('destinationsResort/'.$resort_des[0]['des_name'].'/'.$SEO_keyword.'/'.$rst['rs_display_name'].'/'.$start_date.'/'.$till_date.'/'.$adult.'/'.$child.'');?>" target="_blank">
+						<div class="card">
+							<h3 style="margin-bottom:2%;text-align: left;"><?php echo $rst['rs_name'];?></h3>
+							<img src="<?php echo $resort_img[0]['im_image_url']?>" alt="test" style="width:100%;height: 250px;">
+						</div>
+					</a>
+				<?php } ?>
+			</div>
+    	<?php } ?>
+	</div>
 </div>

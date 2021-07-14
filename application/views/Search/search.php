@@ -386,6 +386,56 @@
   .hotel_review {
     padding: 0px;
   }
+  .tooltip {
+    display:inline-block;
+    position:relative;
+    /* border-bottom:1px dotted #666; */
+     text-align:center; 
+  opacity: unset;
+}
+
+.tooltip .top {
+  min-width: max-content;
+    top:-5px;
+    left:50%;
+    transform:translate(-50%, -100%);
+    padding:6px 6px;
+    color:#ffffff;
+    background-color:#000000;
+    font-weight:normal;
+    font-size:10px;
+    border-radius:8px;
+    position:absolute;
+    z-index:99999999;
+    box-sizing:border-box;
+    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+    display:none;
+}
+
+.tooltip:hover .top {
+    display:block;
+}
+
+.tooltip .top i {
+    position:absolute;
+    top:100%;
+    left:50%;
+    margin-left:-12px;
+    width:24px;
+    height:12px;
+    overflow:hidden;
+}
+
+.tooltip .top i::after {
+    content:'';
+    position:absolute;
+    width:12px;
+    height:12px;
+    left:50%;
+    transform:translate(-50%,-50%) rotate(45deg);
+    background-color:#000000;
+    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+}
 
   @media (max-width: 800px) {
 

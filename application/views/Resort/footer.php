@@ -382,7 +382,7 @@
 	        }); 
 
 			$(window).scroll(function(){
-				if($(window).scrollTop() + $(window).height() > 2500){
+				if($(window).scrollTop() + $(window).height() > 2100){
 					$(".theme-config").css('display','none');
 				}else{
 					$(".theme-config").css('display','block');

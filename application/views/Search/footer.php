@@ -367,7 +367,7 @@
 				$.ajax({
 					url:"<?= base_url(); ?>Search/load_resort_data",
 					method:"POST",
-					data: {limit:limit, start:start,start_date:'<?php echo $start_date;?>',end_date:'<?php echo $till_date;?>',adult:<?php echo $adult; ?>},
+					data: {limit:limit, start:start,start_date:'<?php echo $start_date;?>',end_date:'<?php echo $till_date;?>',adult:<?php echo $adult; ?>,type:'<?php if(!empty($type)){ echo $type;}else{ echo "NA";}?>',dest:'<?php if(!empty($dest)){ echo $dest;}else{ echo "NA";}?>'},
 					cache:false,
 					success:function(data){
 						if(data == ''){
